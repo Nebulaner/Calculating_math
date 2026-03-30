@@ -11,16 +11,16 @@ def approximation(x, y, degree):
     y_fit = np.polyval(coeffs[::-1], x)
     mse = np.mean((y - y_fit) ** 2)
     rmse = np.sqrt(mse)
-    return coeffs, y_fit, rmse
+    return coeffs, rmse
 
 
-coeffs_1, y_fit_1, rmse_1 = approximation(x, y, degree=1)
-coeffs_2, y_fit_2, rmse_2 = approximation(x, y, degree=2)
+coeffs_1, rmse_1 = approximation(x, y, degree=1)
+coeffs_2, rmse_2 = approximation(x, y, degree=2)
 
 print("\nМногочлен 1-й степени (линейная аппроксимация):")
-print(f"P_1(x) = {coeffs_1[0]:.6f} + {coeffs_1[1]:.6f}*x")
-print(f"Среднеквадратичное отклонение: {rmse_1:.6f}")
+print(f"P_1(x) = {coeffs_1[0]:.2f} + {coeffs_1[1]:.2f}*x")
+print(f"Среднеквадратичное отклонение: {rmse_1:.2f}")
 
 print("\nМногочлен 2-й степени (квадратичная аппроксимация):")
-print(f"P_2(x) = {coeffs_2[0]:.6f} + {coeffs_2[1]:.6f}*x + {coeffs_2[2]:.6f}*x^2")
-print(f"Среднеквадратичное отклонение: {rmse_2:.6f}")
+print(f"P_2(x) = {coeffs_2[0]:.2f} + {coeffs_2[1]:.2f}*x + {coeffs_2[2]:.2f}*x^2")
+print(f"Среднеквадратичное отклонение: {rmse_2:.2f}")
