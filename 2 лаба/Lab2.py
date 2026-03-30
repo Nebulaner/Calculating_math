@@ -7,14 +7,10 @@ y = np.array([1.04, 1.47, 1.78, 2.01, 2.19, 2.60, 2.93, 3.22, 3.50, 4.01,
 
 def approximation(x, y, degree):
     A = np.vander(x, degree + 1, increasing=True)
-    
     coeffs, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)
-    
     y_fit = np.polyval(coeffs[::-1], x)
-    
     mse = np.mean((y - y_fit) ** 2)
     rmse = np.sqrt(mse)
-    
     return coeffs, y_fit, rmse
 
 
