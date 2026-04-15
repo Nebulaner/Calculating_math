@@ -1,8 +1,6 @@
 import numpy as np
 
 def spline(x, y):
-    x = np.array(x, dtype=float)
-    y = np.array(y, dtype=float)
     n = len(x) - 1
     
     h = np.diff(x)
@@ -45,6 +43,15 @@ def spline(x, y):
     
     return a, b, c, d
 
+def printSpline(x, a, b, c, d):
+    print("\n" + "="*70)
+    print("КОЭФФИЦИЕНТЫ КУБИЧЕСКОГО СПЛАЙНА (not-a-knot)")
+    print("="*70)
+    
+    for i in range(len(a)):
+        print(f"\nИнтервал {i+1}: [{x[i]:.4f}, {x[i+1]:.4f}]")
+        print(f"  S_{i}(x) = {a[i]:.4f} + {b[i]:.4f}*(x-{x[i]:.4f}) + {c[i]:.4f}*(x-{x[i]:.4f})^2 + {d[i]:.4f}*(x-{x[i]:.4f})^3")
+
 x = [1.000, 1.510, 2.100, 2.750, 3.420, 3.915, 4.350, 4.800, 5.200]
 y = [0.0000, 0.2729, 0.3533, 0.3679, 0.3595, 0.3486, 0.3380, 0.3268, 0.3171]
 
@@ -55,10 +62,4 @@ b = np.round(b, 4)
 c = np.round(c, 4)
 d = np.round(d, 4)
 
-for i in range(len(a)):
-        print(f"\nИнтервал {i+1}: [{x[i]:.4f}, {x[i+1]:.4f}]")
-        print(f"  S_{i}(x) = a_{i} + b_{i}*(x-{x[i]:.4f}) + c_{i}*(x-{x[i]:.4f})^2 + d_{i}*(x-{x[i]:.4f})^3")
-        print(f"  a_{i} = {a[i]:.4f}")
-        print(f"  b_{i} = {b[i]:.4f}")
-        print(f"  c_{i} = {c[i]:.4f}")
-        print(f"  d_{i} = {d[i]:.4f}")
+printSpline(x, a, b, c, d)
