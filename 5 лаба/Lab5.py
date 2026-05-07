@@ -35,45 +35,63 @@ def gauss(A, b):
         print("Система несовместна.")
         return None
 
-def jacobi(A, b, x0=None, tol=1e-6, max_iter=1000):
+def jacobi(A, b):
     A = np.array(A, dtype=float)
     b = np.array(b, dtype=float)
     n = len(b)
     
-    if x0 is None:
-        x = np.zeros(n)
-    else:
-        x = x0.copy()
+    x = np.zeros(n)
     
-    # Диагональ и её обратные значения
     diag = np.diag(A)
     inv_diag = 1 / diag
     
-    # Матрица без диагонали
     A_off = A - np.diag(diag)
     
-    for k in range(max_iter):
+    for k in range(1000):
         x_new = inv_diag * (b - np.dot(A_off, x))
         
-        if np.linalg.norm(x_new - x, np.inf) < tol:
+        if np.linalg.norm(x_new - x, np.inf) < 1e-6:
             return x_new
         
         x = x_new
     
     return x
 
-A1 = np.array([[4, 1, 0, 1], [1, 5, -1, 0], [0, -1, 4, 1], [1, 0, 1, 5]])
-b1 = np.array([6, 5, 4, 7])
+def seidel(A, b):
+    A = np.array(A, dtype=float)
+    b = np.array(b, dtype=float)
+    n = len(b)
+    
+    x = np.zeros(n)
 
-A = np.array(A1)
-b = np.array(b1)
+    for k in range(1000):
+        x_old = x.copy()
+        
+        for i in range(n):
+            x[i] = (b[i] - np.dot(A[i, :i], x[:i]) - np.dot(A[i, i+1:], x_old[i+1:])) / A[i, i]
+        
+        if np.linalg.norm(x - x_old, np.inf) < 1e-6:
+            return x
     
-solution = gauss(A, b)
+    return x
+
+
+A = np.array([[0.97, 0.05, -0.22, 0.33], [-0.22, 0.45, 0.08, -0.07], [-0.33, -0.13, 1.08, 0.05], [-0.08, -0.17, -0.29, 0.67]])
+b = np.array([0.43, -1.8, -0.8, 1.7])
+
+print("ГАУСС")
+x = gauss(A, b)
+if x is not None:
+    print("Решение x:", x)
     
-if solution is not None:
-    print("Решение x:", solution)
-    print("Проверка Ax - b:", np.dot(A, solution) - b)
-    
+print()
+
+print("ЯКОБИ")
 x = jacobi(A, b)
 print("Решение:", x)
-print("Невязка:", np.linalg.norm(np.dot(A, x) - b))
+
+print()
+
+print("ЗЕЙДЕЛЬ")
+x = seidel(A, b)
+print("Решение:", x)
